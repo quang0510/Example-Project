@@ -33,6 +33,16 @@ public class OtpService {
         return isValid;
     }
 
+    public boolean isValidOtp(String email, String otp) {
+        OtpData data = otpCache.get(email);
+        if (data == null) return false;
+        if (System.currentTimeMillis() > data.expireAt) {
+            otpCache.remove(email);
+            return false;
+        }
+        return data.otp.equals(otp);
+    }
+
     private static class OtpData {
         String otp;
         long expireAt;

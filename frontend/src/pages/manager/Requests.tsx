@@ -118,67 +118,70 @@ export const Requests = () => {
                 </div>
             </div>
             
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50/50">
+                    <table className="min-w-full divide-y divide-slate-200">
+                        <thead className="bg-gradient-to-r from-slate-50 to-slate-100/50">
                             <tr>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Khách hàng</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Gian hàng</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Thời gian dự kiến</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Trạng thái</th>
-                                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Thao tác</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Khách hàng</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Gian hàng</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Thời gian dự kiến</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Trạng thái</th>
+                                <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100">
+                        <tbody className="bg-white divide-y divide-slate-100">
                             {requests.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                                    <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
                                         Không tìm thấy yêu cầu nào phù hợp.
                                     </td>
                                 </tr>
                             ) : requests.map((r: any) => (
-                                <tr key={r.id} className="hover:bg-gray-50/50 transition-colors">
-                                    <td className="px-6 py-4">
+                                <tr key={r.id} className="hover:bg-slate-50/80 transition-colors group relative">
+                                    <td className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity"></td>
+                                    <td className="px-6 py-4 relative">
                                         <div className="flex items-center">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-100 to-blue-100 flex items-center justify-center text-indigo-700 font-bold mr-3 shadow-sm">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-100 to-blue-100 flex items-center justify-center text-indigo-700 font-bold mr-3 shadow-sm border border-indigo-200/50 group-hover:scale-110 transition-transform">
                                                 {r.customerFullName?.charAt(0) || '?'}
                                             </div>
                                             <div>
-                                                <div className="text-sm font-semibold text-gray-900">{r.customerFullName}</div>
-                                                <div className="text-xs text-gray-500 mt-0.5">{r.customerPhone}</div>
+                                                <div className="text-sm font-bold text-slate-900 group-hover:text-indigo-700 transition-colors">{r.customerFullName}</div>
+                                                <div className="text-xs font-medium text-slate-500 mt-0.5">{r.customerPhone}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        <div className="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-gray-800 text-sm font-medium border border-gray-200">
+                                    <td className="px-6 py-4 relative">
+                                        <div className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 text-slate-800 text-sm font-bold border border-slate-200">
                                             {r.boothCode}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-900 font-medium">{r.startDate}</div>
-                                        <div className="text-xs text-gray-500 mt-0.5">đến {r.endDate}</div>
+                                    <td className="px-6 py-4 relative">
+                                        <div className="text-sm text-slate-900 font-bold">{r.startDate}</div>
+                                        <div className="text-xs font-medium text-slate-500 mt-0.5">đến {r.endDate}</div>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${getStatusColor(r.status)}`}>
-                                            {r.status === 'CHO_DUYET' && <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 mr-1.5 animate-pulse"></span>}
-                                            {r.status === 'DA_DUYET' && <CheckCircle className="w-3 h-3 mr-1" />}
-                                            {r.status === 'DA_HUY' && <XCircle className="w-3 h-3 mr-1" />}
+                                    <td className="px-6 py-4 relative">
+                                        <span className={`inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-bold border ${getStatusColor(r.status)}`}>
+                                            {r.status === 'CHO_DUYET' && <span className="w-2 h-2 rounded-full bg-yellow-500 mr-2 animate-pulse"></span>}
+                                            {r.status === 'DA_DUYET' && <CheckCircle className="w-3.5 h-3.5 mr-1" />}
+                                            {r.status === 'DA_HUY' && <XCircle className="w-3.5 h-3.5 mr-1" />}
                                             {r.status === 'CHO_DUYET' ? 'Chờ duyệt' : r.status === 'DA_DUYET' ? 'Đã duyệt' : 'Đã hủy'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-right space-x-2">
+                                    <td className="px-6 py-4 text-right space-x-2 relative">
                                         {r.status === 'CHO_DUYET' && (
                                             <div className="flex items-center justify-end gap-2">
                                                 <button 
+                                                    title="Từ chối yêu cầu"
                                                     onClick={() => openReject(r.id)} 
-                                                    className="inline-flex items-center px-3 py-1.5 border border-red-200 rounded-lg text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 hover:border-red-300 transition-colors"
+                                                    className="inline-flex items-center px-3 py-2 border border-rose-200 rounded-lg text-sm font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 hover:border-rose-300 transition-colors shadow-sm"
                                                 >
                                                     Từ chối
                                                 </button>
                                                 <button 
+                                                    title="Duyệt và tạo hợp đồng"
                                                     onClick={() => openApprove(r.id)} 
-                                                    className="inline-flex items-center px-3 py-1.5 border border-transparent rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition-colors"
+                                                    className="inline-flex items-center px-3 py-2 border border-transparent rounded-lg text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm shadow-indigo-200 hover:shadow-md hover:shadow-indigo-300 transition-all hover:-translate-y-0.5"
                                                 >
                                                     <CheckCircle className="w-4 h-4 mr-1.5" />
                                                     Duyệt & Tạo HĐ
@@ -187,8 +190,9 @@ export const Requests = () => {
                                         )}
                                         {r.status === 'DA_DUYET' && (
                                             <button 
+                                                title="Làm lại hợp đồng"
                                                 onClick={() => openApprove(r.id)} 
-                                                className="inline-flex items-center px-3 py-1.5 border border-indigo-200 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors"
+                                                className="inline-flex items-center px-3 py-2 border border-indigo-200 rounded-lg text-sm font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 hover:border-indigo-300 transition-colors shadow-sm"
                                             >
                                                 <FileText className="w-4 h-4 mr-1.5" />
                                                 Làm lại HĐ
@@ -217,56 +221,56 @@ export const Requests = () => {
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+                            className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-100"
                         >
-                            <div className="bg-indigo-600 px-6 py-4">
-                                <h3 className="text-lg font-bold text-white flex items-center">
-                                    <CheckCircle className="w-5 h-5 mr-2" />
+                            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-5">
+                                <h3 className="text-xl font-black text-white flex items-center">
+                                    <CheckCircle className="w-6 h-6 mr-3 text-indigo-200" />
                                     Duyệt yêu cầu thuê
                                 </h3>
                             </div>
-                            <div className="p-6">
-                                <p className="text-sm text-gray-500 mb-5">Hệ thống sẽ tự động tạo Hợp đồng sau khi bạn duyệt yêu cầu này. Vui lòng nhập thông tin giá trị hợp đồng.</p>
+                            <div className="p-8">
+                                <p className="text-sm font-medium text-slate-500 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">Hệ thống sẽ tự động tạo Hợp đồng sau khi bạn duyệt yêu cầu này. Vui lòng nhập thông tin giá trị hợp đồng.</p>
                                 
-                                <div className="space-y-4">
+                                <div className="space-y-5">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Tiền cọc yêu cầu (VND)</label>
-                                        <div className="relative">
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">Tiền cọc yêu cầu (VNĐ)</label>
+                                        <div className="relative group">
                                             <input 
                                                 type="number" 
                                                 value={deposit}
                                                 onChange={e => setDeposit(e.target.value)}
-                                                className="block w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-colors"
+                                                className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-bold text-slate-900 bg-slate-50 focus:bg-white"
                                                 placeholder="VD: 10000000"
                                             />
-                                            <span className="absolute right-4 top-2.5 text-gray-400 font-medium">VNĐ</span>
+                                            <span className="absolute right-4 top-3 text-slate-400 font-bold group-focus-within:text-indigo-500 transition-colors">VNĐ</span>
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Tổng giá trị hợp đồng (VND)</label>
-                                        <div className="relative">
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">Tổng giá trị hợp đồng (VNĐ)</label>
+                                        <div className="relative group">
                                             <input 
                                                 type="number" 
                                                 value={total}
                                                 onChange={e => setTotal(e.target.value)}
-                                                className="block w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-colors"
+                                                className="block w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-bold text-slate-900 bg-slate-50 focus:bg-white"
                                                 placeholder="VD: 120000000"
                                             />
-                                            <span className="absolute right-4 top-2.5 text-gray-400 font-medium">VNĐ</span>
+                                            <span className="absolute right-4 top-3 text-slate-400 font-bold group-focus-within:text-indigo-500 transition-colors">VNĐ</span>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <div className="mt-8 flex gap-3">
+                                <div className="mt-8 flex gap-4">
                                     <button 
                                         onClick={() => setShowApproveModal(false)}
-                                        className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                                        className="flex-1 px-4 py-3 rounded-xl text-slate-700 font-bold bg-slate-100 hover:bg-slate-200 transition-colors"
                                     >
                                         Hủy bỏ
                                     </button>
                                     <button 
                                         onClick={handleApproveSubmit}
-                                        className="flex-1 px-4 py-2.5 bg-indigo-600 rounded-xl text-white font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition-colors"
+                                        className="flex-1 px-4 py-3 bg-indigo-600 rounded-xl text-white font-bold hover:bg-indigo-700 shadow-md shadow-indigo-200 transition-all hover:-translate-y-0.5"
                                     >
                                         Xác nhận duyệt
                                     </button>
@@ -292,35 +296,35 @@ export const Requests = () => {
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md"
+                            className="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md border border-slate-100"
                         >
-                            <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-                                <XCircle className="w-6 h-6 text-red-600" />
+                            <div className="w-16 h-16 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center mx-auto mb-5 shadow-inner">
+                                <XCircle className="w-8 h-8 text-rose-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-center text-gray-900 mb-2">Từ chối yêu cầu</h3>
-                            <p className="text-center text-gray-500 mb-6 text-sm">Vui lòng cung cấp lý do từ chối để khách hàng biết thông tin chi tiết.</p>
+                            <h3 className="text-2xl font-black text-center text-slate-900 mb-2">Từ chối yêu cầu</h3>
+                            <p className="text-center text-slate-500 mb-6 font-medium text-sm">Vui lòng cung cấp lý do từ chối để khách hàng biết thông tin chi tiết.</p>
                             
-                            <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Lý do từ chối *</label>
+                            <div className="mb-8">
+                                <label className="block text-sm font-bold text-slate-700 mb-2">Lý do từ chối <span className="text-rose-500">*</span></label>
                                 <textarea 
                                     value={rejectReason}
                                     onChange={e => setRejectReason(e.target.value)}
                                     rows={4}
-                                    className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-red-500 focus:border-red-500 outline-none transition-colors resize-none"
+                                    className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-rose-100 focus:border-rose-500 outline-none transition-all resize-none font-medium text-slate-900 focus:bg-white"
                                     placeholder="VD: Gian hàng đã được đặt trước bởi người khác..."
                                 />
                             </div>
                             
-                            <div className="flex gap-3">
+                            <div className="flex gap-4">
                                 <button 
                                     onClick={() => setShowRejectModal(false)}
-                                    className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                                    className="flex-1 px-4 py-3 rounded-xl text-slate-700 font-bold bg-slate-100 hover:bg-slate-200 transition-colors"
                                 >
                                     Hủy bỏ
                                 </button>
                                 <button 
                                     onClick={handleRejectSubmit}
-                                    className="flex-1 px-4 py-2.5 bg-red-600 rounded-xl text-white font-medium hover:bg-red-700 shadow-sm shadow-red-200 transition-colors"
+                                    className="flex-1 px-4 py-3 bg-rose-600 rounded-xl text-white font-bold hover:bg-rose-700 shadow-md shadow-rose-200 transition-all hover:-translate-y-0.5"
                                 >
                                     Từ chối yêu cầu
                                 </button>

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-
 import { api } from '../api/endpoints';
+import { motion } from 'framer-motion';
+import { Eye, EyeOff, Lock, User, ArrowRight, ShieldCheck, Mail } from 'lucide-react';
 
 export const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [fieldErrors, setFieldErrors] = useState<any>({});
     const [loading, setLoading] = useState(false);
@@ -25,7 +27,6 @@ export const Login = () => {
             return;
         }
         setFieldErrors({});
-
         setError('');
         setLoading(true);
         try {
@@ -50,101 +51,110 @@ export const Login = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Đăng nhập tài khoản
-                </h2>
-                <p className="mt-2 text-center text-sm text-gray-600">
-                    Hoặc{' '}
-                    <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                        tạo tài khoản mới
-                    </Link>
-                </p>
+        <div className="min-h-screen flex bg-slate-50 relative overflow-hidden font-sans">
+            {/* Animated Background Shapes */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+                <motion.div 
+                    animate={{ y: [0, -20, 0], x: [0, 10, 0], rotate: [0, 5, 0] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -top-[10%] -left-[10%] w-[40rem] h-[40rem] rounded-full bg-indigo-400/20 blur-[100px]" 
+                />
+                <motion.div 
+                    animate={{ y: [0, 30, 0], x: [0, -20, 0], rotate: [0, -5, 0] }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="absolute bottom-[-10%] right-[-5%] w-[35rem] h-[35rem] rounded-full bg-purple-400/20 blur-[100px]" 
+                />
+                <motion.div 
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-[20%] right-[15%] w-64 h-64 rounded-full bg-pink-400/20 blur-[80px]" 
+                />
             </div>
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-100">
-                    <form className="space-y-6" onSubmit={handleSubmit}>
-                        {error && (
-                            <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-md">
-                                <div className="flex">
-                                    <div className="flex-shrink-0">
-                                        <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <div className="ml-3">
-                                        <p className="text-sm text-red-700">{error}</p>
-                                    </div>
+            <div className="w-full flex justify-center items-center p-4">
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-[2rem] shadow-2xl shadow-indigo-900/10 w-full max-w-md border border-white"
+                >
+                    <div className="text-center mb-8">
+                        <Link to="/" className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 mb-6 shadow-lg shadow-indigo-500/30 transform transition-transform hover:scale-105">
+                            <span className="text-white font-black text-3xl">B</span>
+                        </Link>
+                        <h2 className="text-3xl font-black text-slate-900 tracking-tight">Đăng nhập</h2>
+                        <p className="text-slate-500 mt-2 font-medium">Truy cập vào hệ thống quản lý mặt bằng</p>
+                    </div>
+
+                    {error && (
+                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mb-6 bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 rounded-xl text-sm font-semibold text-center flex items-center justify-center gap-2">
+                            <ShieldCheck className="w-4 h-4" /> {error}
+                        </motion.div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        <div>
+                            <label className="block text-sm font-bold text-slate-700 mb-1.5">Tên đăng nhập</label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-600 transition-colors">
+                                    <User className="h-5 w-5" />
                                 </div>
-                            </div>
-                        )}
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Tên đăng nhập</label>
-                            <div className="mt-1">
-                                <input
-                                    type="text"
-                                    value={username}
-                                    onChange={(e) => { setUsername(e.target.value); if (fieldErrors.username) setFieldErrors({...fieldErrors, username: ''}); }}
-                                    className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${fieldErrors.username ? 'border-red-400 focus:border-red-500 focus:ring-red-200 focus:ring-2' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 focus:ring-1'}`}
-                                    placeholder="Nhập tên đăng nhập"
+                                <input 
+                                    type="text" 
+                                    className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 border rounded-xl outline-none transition-all font-medium text-slate-700 focus:bg-white focus:ring-4 ${fieldErrors.username ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-100' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'}`} 
+                                    placeholder="Nhập username của bạn" 
+                                    value={username} 
+                                    onChange={(e) => setUsername(e.target.value)} 
                                 />
-                                {fieldErrors.username && <p className="text-red-500 text-xs mt-1 font-medium">{fieldErrors.username}</p>}
                             </div>
+                            {fieldErrors.username && <p className="text-rose-500 text-xs mt-1.5 font-bold px-1">{fieldErrors.username}</p>}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Mật khẩu</label>
-                            <div className="mt-1">
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => { setPassword(e.target.value); if (fieldErrors.password) setFieldErrors({...fieldErrors, password: ''}); }}
-                                    className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${fieldErrors.password ? 'border-red-400 focus:border-red-500 focus:ring-red-200 focus:ring-2' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 focus:ring-1'}`}
-                                    placeholder="••••••••"
+                            <label className="block text-sm font-bold text-slate-700 mb-1.5">
+                                Mật khẩu
+                            </label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-600 transition-colors">
+                                    <Lock className="h-5 w-5" />
+                                </div>
+                                <input 
+                                    type={showPassword ? "text" : "password"} 
+                                    className={`w-full pl-11 pr-12 py-3.5 bg-slate-50 border rounded-xl outline-none transition-all font-medium text-slate-700 focus:bg-white focus:ring-4 ${fieldErrors.password ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-100' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'}`} 
+                                    placeholder="••••••••" 
+                                    value={password} 
+                                    onChange={(e) => setPassword(e.target.value)} 
                                 />
-                                {fieldErrors.password && <p className="text-red-500 text-xs mt-1 font-medium">{fieldErrors.password}</p>}
+                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer">
+                                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                </button>
+                            </div>
+                            <div className="flex justify-between items-start mt-2 px-1">
+                                <div className="flex-1">
+                                    {fieldErrors.password && <p className="text-rose-500 text-xs font-bold">{fieldErrors.password}</p>}
+                                </div>
+                                <Link to="/forgot-password" className="text-indigo-600 hover:text-indigo-700 text-sm font-bold transition-colors ml-2">Quên mật khẩu?</Link>
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input
-                                    id="remember-me"
-                                    name="remember-me"
-                                    type="checkbox"
-                                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                />
-                                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                                    Ghi nhớ đăng nhập
-                                </label>
-                            </div>
-
-                            <div className="text-sm">
-                                <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                                    Quên mật khẩu?
-                                </a>
-                            </div>
-                        </div>
-
-                        <div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                            >
-                                {loading ? (
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                ) : 'Đăng nhập'}
-                            </button>
-                        </div>
+                        <button 
+                            type="submit" 
+                            disabled={loading} 
+                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-md shadow-indigo-200 hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 flex justify-center items-center gap-2 mt-6"
+                        >
+                            {loading ? (
+                                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                                <>Đăng Nhập <ArrowRight className="w-5 h-5" /></>
+                            )}
+                        </button>
                     </form>
-                </div>
+
+                    <div className="mt-8 pt-6 border-t border-slate-100 text-center text-sm font-medium text-slate-600">
+                        Chưa có tài khoản?{' '}
+                        <Link to="/register" className="text-indigo-600 hover:text-indigo-800 font-bold transition-colors">Đăng ký ngay</Link>
+                    </div>
+                </motion.div>
             </div>
         </div>
     );

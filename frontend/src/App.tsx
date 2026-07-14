@@ -8,6 +8,7 @@ import { MallMap } from './pages/MallMap';
 import { Pricing } from './pages/Pricing';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
+import { OAuth2RedirectHandler } from './pages/OAuth2RedirectHandler';
 import { Dashboard } from './pages/manager/Dashboard';
 import { Booths } from './pages/manager/Booths';
 import { Requests } from './pages/manager/Requests';
@@ -36,6 +37,7 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             
             {/* Protected Routes for All Authenticated Users using MainLayout */}

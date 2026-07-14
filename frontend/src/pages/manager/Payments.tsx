@@ -89,74 +89,76 @@ export const Payments = () => {
                 </div>
             </div>
             
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50/50">
+                    <table className="min-w-full divide-y divide-slate-200">
+                        <thead className="bg-gradient-to-r from-slate-50 to-slate-100/50">
                             <tr>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Khách hàng</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Hợp đồng</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Khoản thu</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cần thu</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Hạn chót</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Trạng thái</th>
-                                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Thao tác</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Khách hàng</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Hợp đồng</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Khoản thu</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Cần thu</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Hạn chót</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Trạng thái</th>
+                                <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100">
+                        <tbody className="bg-white divide-y divide-slate-100">
                             {payments.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
+                                    <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
                                         Không tìm thấy khoản thanh toán nào.
                                     </td>
                                 </tr>
                             ) : payments.map((p: any) => {
                                 const totalToPay = p.amount + (p.penaltyAmount || 0);
+                                const isOverdue = p.status === 'QUA_HAN';
                                 return (
-                                    <tr key={p.id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-6 py-4">
+                                    <tr key={p.id} className={`hover:bg-slate-50/80 transition-colors group relative ${isOverdue ? 'bg-red-50/20' : ''}`}>
+                                        <td className={`absolute left-0 top-0 bottom-0 w-1 opacity-0 group-hover:opacity-100 transition-opacity ${isOverdue ? 'bg-red-500' : 'bg-blue-500'}`}></td>
+                                        <td className="px-6 py-4 relative">
                                             <div className="flex items-center">
-                                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-100 to-gray-200 flex items-center justify-center text-gray-700 font-bold mr-3 shadow-sm">
+                                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-100 to-purple-100 flex items-center justify-center text-indigo-700 font-bold mr-3 shadow-sm border border-indigo-200/50 group-hover:scale-110 transition-transform">
                                                     {p.customerFullName?.charAt(0) || '?'}
                                                 </div>
-                                                <span className="text-sm font-semibold text-gray-900">{p.customerFullName}</span>
+                                                <span className="text-sm font-bold text-slate-900">{p.customerFullName}</span>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <div className="inline-flex items-center px-2 py-1 rounded-md bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100">
+                                        <td className="px-6 py-4 relative">
+                                            <div className="inline-flex items-center px-2 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200">
                                                 {p.contractNo}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm font-medium text-gray-800">{p.title}</div>
+                                        <td className="px-6 py-4 relative">
+                                            <div className="text-sm font-bold text-slate-800">{p.title}</div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-900 font-bold">{formatCurrency(p.amount)}</div>
-                                            {p.penaltyAmount > 0 && <div className="text-red-500 text-xs font-medium mt-1">+ Phạt: {formatCurrency(p.penaltyAmount)}</div>}
+                                        <td className="px-6 py-4 relative">
+                                            <div className="text-sm text-slate-900 font-black">{formatCurrency(p.amount)}</div>
+                                            {p.penaltyAmount > 0 && <div className="text-rose-500 text-xs font-bold mt-1 bg-rose-50 px-1.5 py-0.5 rounded w-fit border border-rose-100">+ Phạt: {formatCurrency(p.penaltyAmount)}</div>}
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-600 font-medium">
+                                        <td className="px-6 py-4 text-sm text-slate-600 font-medium relative">
                                             {p.dueDate}
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${getStatusColor(p.status)}`}>
-                                                {p.status === 'CHO_THANH_TOAN' && <Clock className="w-3 h-3 mr-1" />}
-                                                {p.status === 'DA_THANH_TOAN' && <CheckCircle className="w-3 h-3 mr-1" />}
-                                                {p.status === 'QUA_HAN' && <AlertCircle className="w-3 h-3 mr-1" />}
+                                        <td className="px-6 py-4 relative">
+                                            <span className={`inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-bold border ${getStatusColor(p.status)} ${isOverdue ? 'animate-pulse' : ''}`}>
+                                                {p.status === 'CHO_THANH_TOAN' && <Clock className="w-3.5 h-3.5 mr-1" />}
+                                                {p.status === 'DA_THANH_TOAN' && <CheckCircle className="w-3.5 h-3.5 mr-1" />}
+                                                {p.status === 'QUA_HAN' && <AlertCircle className="w-3.5 h-3.5 mr-1" />}
                                                 {p.status === 'CHO_THANH_TOAN' ? 'Chờ thanh toán' : p.status === 'DA_THANH_TOAN' ? 'Đã thanh toán' : 'Quá hạn'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="px-6 py-4 text-right relative">
                                             {p.status !== 'DA_THANH_TOAN' ? (
                                                 <button 
                                                     onClick={() => openConfirm(p.id, totalToPay)} 
-                                                    className="inline-flex items-center px-3 py-1.5 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 shadow-sm shadow-blue-200 transition-colors"
+                                                    className="inline-flex items-center px-3 py-2 border border-transparent rounded-lg text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm shadow-blue-200 hover:shadow-md hover:shadow-blue-300 transition-all hover:-translate-y-0.5"
                                                 >
                                                     <CreditCard className="w-4 h-4 mr-1.5" /> Xác nhận thu
                                                 </button>
                                             ) : (
                                                 <div className="inline-flex flex-col items-end">
-                                                    <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Thực thu</span>
-                                                    <span className="text-sm font-bold text-green-600">{formatCurrency(p.actualAmount)}</span>
+                                                    <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Thực thu</span>
+                                                    <span className="text-sm font-black text-emerald-600">{formatCurrency(p.actualAmount)}</span>
                                                 </div>
                                             )}
                                         </td>
@@ -183,42 +185,42 @@ export const Payments = () => {
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md border border-gray-100"
+                            className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 w-full max-w-md border border-white"
                         >
-                            <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-                                <CreditCard className="w-6 h-6 text-blue-600" />
+                            <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center mx-auto mb-6 shadow-inner transform -translate-y-12 mb--8 absolute left-1/2 -translate-x-1/2 bg-white">
+                                <CreditCard className="w-8 h-8 text-blue-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-center text-gray-900 mb-2">Xác nhận thu tiền</h3>
-                            <p className="text-center text-gray-500 mb-6 text-sm">Xác nhận khoản tiền bạn thực nhận từ khách hàng cho phiếu thu này.</p>
+                            <h3 className="text-2xl font-black text-center text-slate-900 mb-2 mt-4">Xác nhận thu tiền</h3>
+                            <p className="text-center text-slate-500 mb-8 font-medium">Vui lòng kiểm tra kỹ số tiền thực nhận trước khi xác nhận.</p>
                             
-                            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6 flex justify-between items-center">
-                                <span className="text-sm text-gray-600 font-medium">Số tiền cần thu:</span>
-                                <span className="text-lg font-bold text-gray-900">{formatCurrency(expectedAmount)}</span>
+                            <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 mb-6 flex flex-col items-center justify-center gap-1 shadow-inner">
+                                <span className="text-sm text-slate-500 font-bold uppercase tracking-wider">Số tiền cần thu</span>
+                                <span className="text-3xl font-black text-slate-900 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{formatCurrency(expectedAmount)}</span>
                             </div>
 
-                            <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Thực thu (VND) *</label>
-                                <div className="relative">
+                            <div className="mb-8">
+                                <label className="block text-sm font-bold text-slate-700 mb-2">Thực thu (VNĐ) <span className="text-rose-500">*</span></label>
+                                <div className="relative group">
                                     <input 
                                         type="number" 
                                         value={actualAmount}
                                         onChange={e => setActualAmount(e.target.value)}
-                                        className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-lg font-semibold"
+                                        className="block w-full pl-4 pr-16 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all text-xl font-black text-slate-900 focus:bg-white"
                                     />
-                                    <span className="absolute right-4 top-3 text-gray-400 font-medium">VNĐ</span>
+                                    <span className="absolute right-4 top-4 text-slate-400 font-bold group-focus-within:text-blue-500 transition-colors">VNĐ</span>
                                 </div>
                             </div>
                             
-                            <div className="flex gap-3">
+                            <div className="flex gap-4">
                                 <button 
                                     onClick={() => setShowConfirmModal(false)}
-                                    className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                                    className="flex-1 px-4 py-3.5 rounded-xl text-slate-700 font-bold bg-slate-100 hover:bg-slate-200 transition-colors"
                                 >
                                     Hủy bỏ
                                 </button>
                                 <button 
                                     onClick={handleConfirmSubmit}
-                                    className="flex-1 px-4 py-2.5 bg-blue-600 rounded-xl text-white font-medium hover:bg-blue-700 shadow-sm shadow-blue-200 transition-colors"
+                                    className="flex-1 px-4 py-3.5 bg-blue-600 rounded-xl text-white font-bold hover:bg-blue-700 shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5"
                                 >
                                     Xác nhận
                                 </button>

@@ -55,33 +55,33 @@ export const AuditLogs = () => {
         <div className="p-6">
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 tracking-tight">
                         <Activity className="w-6 h-6 text-indigo-600" />
                         Nhật ký thao tác
                     </h1>
-                    <p className="text-gray-500 text-sm mt-1">Giám sát các thay đổi quan trọng trên hệ thống</p>
+                    <p className="text-slate-500 font-medium text-sm mt-1">Giám sát các thay đổi quan trọng trên hệ thống</p>
                 </div>
-                <button onClick={fetchLogs} className="px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 text-sm font-medium">
+                <button onClick={fetchLogs} className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-colors text-sm font-bold text-slate-700">
                     Làm mới
                 </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-                <div className="p-4 border-b border-gray-100 flex gap-4 bg-gray-50/50">
-                    <div className="relative flex-1 max-w-md">
-                        <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
+            <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+                <div className="p-5 border-b border-slate-100 flex gap-4 bg-slate-50/50">
+                    <div className="relative flex-1 max-w-md group">
+                        <Search className="w-4 h-4 absolute left-4 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                         <input 
                             type="text" 
                             placeholder="Tìm kiếm theo chi tiết, bảng, người thực hiện..." 
-                            className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 font-medium text-slate-900 transition-all outline-none focus:bg-white"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="relative">
-                        <Filter className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
+                    <div className="relative group">
+                        <Filter className="w-4 h-4 absolute left-4 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                         <select 
-                            className="pl-9 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 appearance-none bg-white"
+                            className="pl-11 pr-10 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 font-bold text-slate-700 appearance-none bg-white transition-all outline-none"
                             value={actionFilter}
                             onChange={(e) => setActionFilter(e.target.value)}
                         >
@@ -94,33 +94,33 @@ export const AuditLogs = () => {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
-                        <thead className="bg-gray-50 text-gray-600 font-medium border-b border-gray-100 uppercase text-xs">
+                    <table className="min-w-full text-left text-sm divide-y divide-slate-200">
+                        <thead className="bg-gradient-to-r from-slate-50 to-slate-100/50">
                             <tr>
-                                <th className="px-6 py-4">Thời gian</th>
-                                <th className="px-6 py-4">Hành động</th>
-                                <th className="px-6 py-4">Đối tượng (Bảng)</th>
-                                <th className="px-6 py-4">Chi tiết</th>
-                                <th className="px-6 py-4">Người thực hiện</th>
+                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Thời gian</th>
+                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Hành động</th>
+                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Đối tượng (Bảng)</th>
+                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Chi tiết</th>
+                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Người thực hiện</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-slate-100 bg-white">
                             {loading ? (
-                                <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">Đang tải dữ liệu...</td></tr>
+                                <tr><td colSpan={5} className="px-6 py-12 text-center text-slate-500 font-medium">Đang tải dữ liệu...</td></tr>
                             ) : filteredLogs.length === 0 ? (
-                                <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">Không có nhật ký nào phù hợp.</td></tr>
+                                <tr><td colSpan={5} className="px-6 py-12 text-center text-slate-500 font-medium">Không có nhật ký nào phù hợp.</td></tr>
                             ) : (
                                 filteredLogs.map((log) => (
-                                    <tr key={log.id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">{formatDate(log.createdAt)}</td>
+                                    <tr key={log.id} className="hover:bg-slate-50/80 transition-colors">
+                                        <td className="px-6 py-4 whitespace-nowrap text-slate-600 font-medium">{formatDate(log.createdAt)}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">{getActionBadge(log.action)}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="font-mono text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                                            <span className="font-mono text-xs font-bold bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-md border border-slate-200">
                                                 {log.entityName}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-900">{log.details}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{log.performedBy}</td>
+                                        <td className="px-6 py-4 text-slate-800 font-medium">{log.details}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap font-bold text-slate-900">{log.performedBy}</td>
                                     </tr>
                                 ))
                             )}
@@ -130,20 +130,20 @@ export const AuditLogs = () => {
                 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                    <div className="p-4 border-t border-gray-100 flex items-center justify-between bg-gray-50">
-                        <span className="text-sm text-gray-600">Trang {page + 1} / {totalPages}</span>
+                    <div className="p-5 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
+                        <span className="text-sm text-slate-600 font-medium">Trang <span className="font-bold text-slate-900">{page + 1}</span> / {totalPages}</span>
                         <div className="flex gap-2">
                             <button 
                                 onClick={() => setPage(p => Math.max(0, p - 1))} 
                                 disabled={page === 0}
-                                className="px-3 py-1 border border-gray-300 rounded bg-white disabled:opacity-50 hover:bg-gray-50 text-sm"
+                                className="px-4 py-2 border border-slate-200 rounded-xl bg-white disabled:opacity-50 hover:bg-slate-50 hover:border-slate-300 font-bold text-slate-700 transition-colors shadow-sm"
                             >
                                 Trước
                             </button>
                             <button 
                                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} 
                                 disabled={page >= totalPages - 1}
-                                className="px-3 py-1 border border-gray-300 rounded bg-white disabled:opacity-50 hover:bg-gray-50 text-sm"
+                                className="px-4 py-2 border border-slate-200 rounded-xl bg-white disabled:opacity-50 hover:bg-slate-50 hover:border-slate-300 font-bold text-slate-700 transition-colors shadow-sm"
                             >
                                 Sau
                             </button>

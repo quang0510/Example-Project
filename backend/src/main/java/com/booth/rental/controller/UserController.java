@@ -38,6 +38,14 @@ public class UserController {
                 .map(UserResponse::from).collect(Collectors.toList()));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(auth.getName())
+                .orElseThrow(() -> new BusinessException("Khong tim thay user", HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(UserResponse.from(user));
+    }
+
     @PutMapping("/me")
     public ResponseEntity<UserResponse> updateProfile(@Valid @RequestBody UpdateProfileRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

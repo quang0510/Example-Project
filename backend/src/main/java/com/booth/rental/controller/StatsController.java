@@ -27,4 +27,11 @@ public class StatsController {
             @RequestParam(defaultValue = "#{T(java.time.LocalDate).now().getYear()}") int year) {
         return ResponseEntity.ok(service.getRevenueChart(year));
     }
+
+    @GetMapping("/revenue-comparison")
+    @PreAuthorize("hasAnyRole('MANAGER','SYSTEM_ADMIN')")
+    public ResponseEntity<Map<String, Object>> getRevenueComparison(
+            @RequestParam(defaultValue = "#{T(java.time.LocalDate).now().getYear()}") int year) {
+        return ResponseEntity.ok(service.getRevenueComparison(year));
+    }
 }

@@ -119,50 +119,52 @@ export const Booths = () => {
                 </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50/50">
+                    <table className="min-w-full divide-y divide-slate-200">
+                        <thead className="bg-gradient-to-r from-slate-50 to-slate-100/50">
                             <tr>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Mã / Tên</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Khu vực / Diện tích</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Giá thuê (tháng)</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Trạng thái</th>
-                                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Thao tác</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Mã / Tên</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Khu vực / Diện tích</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Giá thuê (tháng)</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Trạng thái</th>
+                                <th className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100">
+                        <tbody className="bg-white divide-y divide-slate-100">
                             {booths.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                                    <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
                                         Không tìm thấy gian hàng nào.
                                     </td>
                                 </tr>
                             ) : booths.map((b: any) => (
-                                <tr key={b.id} className="hover:bg-gray-50/50 transition-colors">
-                                    <td className="px-6 py-4">
+                                <tr key={b.id} className="hover:bg-slate-50/80 transition-colors group relative">
+                                    {/* Subtitle left border highlight on hover */}
+                                    <td className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity"></td>
+                                    <td className="px-6 py-4 relative">
                                         <div className="flex items-center">
-                                            <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold mr-3 border border-indigo-100">
+                                            <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold mr-3 border border-indigo-100 group-hover:scale-105 transition-transform">
                                                 {b.boothCode.substring(0, 2)}
                                             </div>
                                             <div>
-                                                <div className="text-sm font-bold text-gray-900">{b.boothCode}</div>
-                                                <div className="text-xs font-medium text-gray-500">{b.name}</div>
+                                                <div className="text-sm font-bold text-slate-900 group-hover:text-indigo-700 transition-colors">{b.boothCode}</div>
+                                                <div className="text-xs font-medium text-slate-500">{b.name}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm font-medium text-gray-900">Khu {b.zone}</div>
-                                        <div className="text-xs text-gray-500 mt-0.5">{b.area} m²</div>
+                                    <td className="px-6 py-4 relative">
+                                        <div className="text-sm font-bold text-slate-900">Khu {b.zone}</div>
+                                        <div className="text-xs font-medium text-slate-500 mt-0.5">{b.area} m²</div>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-sm text-gray-900 font-bold">
+                                    <td className="px-6 py-4 relative">
+                                        <div className="text-sm text-slate-900 font-black">
                                             {formatCurrency(b.price)}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4 relative">
                                         <select 
-                                            className={`px-2.5 py-1 text-xs font-semibold rounded-full border cursor-pointer appearance-none outline-none focus:ring-2 focus:ring-indigo-500 ${getStatusColor(b.status)}`}
+                                            className={`px-3 py-1.5 text-xs font-bold rounded-full border cursor-pointer appearance-none outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow ${getStatusColor(b.status)}`}
                                             value={b.status}
                                             onChange={(e) => handleChangeStatus(b.id, e.target.value)}
                                             disabled={b.status === 'DANG_THUE' || b.status === 'DA_DAT'}
@@ -173,32 +175,35 @@ export const Booths = () => {
                                             <option value="DA_DAT" disabled>Đã đặt</option>
                                         </select>
                                     </td>
-                                    <td className="px-6 py-4 text-right space-x-2">
+                                    <td className="px-6 py-4 text-right space-x-2 relative">
                                         <button 
+                                            title="Chỉnh sửa gian hàng"
                                             onClick={() => { setCurrentBooth({...b}); setShowFormModal(true); }} 
-                                            className="inline-flex items-center px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                                            className="inline-flex items-center px-2.5 py-2 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 transition-colors shadow-sm"
                                         >
-                                            <Edit className="w-3.5 h-3.5 mr-1" /> Sửa
+                                            <Edit className="w-4 h-4" />
                                         </button>
                                         
                                         <button 
+                                            title={b.status === 'BAO_TRI' ? 'Mở lại' : 'Bảo trì'}
                                             onClick={() => handleChangeStatus(b.id, b.status === 'BAO_TRI' ? 'TRONG' : 'BAO_TRI')} 
-                                            className={`inline-flex items-center px-2.5 py-1.5 border rounded-lg text-xs font-medium transition-colors ${
+                                            className={`inline-flex items-center px-2.5 py-2 border rounded-lg text-xs font-bold transition-colors shadow-sm ${
                                                 b.status === 'BAO_TRI' 
-                                                ? 'border-green-200 text-green-700 bg-green-50 hover:bg-green-100' 
-                                                : 'border-yellow-200 text-yellow-700 bg-yellow-50 hover:bg-yellow-100'
+                                                ? 'border-emerald-200 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:border-emerald-300' 
+                                                : 'border-amber-200 text-amber-700 bg-amber-50 hover:bg-amber-100 hover:border-amber-300'
                                             }`}
                                             disabled={b.status === 'DANG_THUE' || b.status === 'DA_DAT'}
                                         >
-                                            {b.status === 'BAO_TRI' ? <><Power className="w-3.5 h-3.5 mr-1" /> Mở lại</> : <><ShieldAlert className="w-3.5 h-3.5 mr-1" /> Bảo trì</>}
+                                            {b.status === 'BAO_TRI' ? <Power className="w-4 h-4" /> : <ShieldAlert className="w-4 h-4" />}
                                         </button>
 
                                         <button 
+                                            title="Xóa gian hàng"
                                             onClick={() => handleDeleteClick(b.id)} 
-                                            className="inline-flex items-center px-2.5 py-1.5 border border-red-200 rounded-lg text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="inline-flex items-center px-2.5 py-2 border border-rose-200 rounded-lg text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 hover:border-rose-300 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                                             disabled={b.status !== 'TRONG' && b.status !== 'BAO_TRI'}
                                         >
-                                            <Trash2 className="w-3.5 h-3.5 mr-1" /> Xóa
+                                            <Trash2 className="w-4 h-4" />
                                         </button>
                                     </td>
                                 </tr>

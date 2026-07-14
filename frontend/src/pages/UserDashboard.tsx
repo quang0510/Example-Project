@@ -17,6 +17,7 @@ export const UserDashboard = () => {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedPayment, setSelectedPayment] = useState<any>(null);
+    const [paymentMethod, setPaymentMethod] = useState('bank');
     const { user } = useAuth();
     const location = useLocation();
 
@@ -162,10 +163,45 @@ export const UserDashboard = () => {
 
     return (
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-80px)] bg-slate-50/50">
-            <div className="mb-10">
-                <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Khu vực Khách hàng</h1>
-                <p className="text-slate-500 mt-2">Quản lý các yêu cầu thuê, hợp đồng và thanh toán chi phí của bạn.</p>
+            <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Khu vực Khách hàng</h1>
+                    <p className="text-slate-500 mt-2">Quản lý các yêu cầu thuê, hợp đồng và thanh toán chi phí của bạn.</p>
+                </div>
             </div>
+
+            {/* Summary Stats */}
+            {!loading && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 flex items-center gap-6">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+                            <Send className="w-8 h-8" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-bold text-slate-500 mb-1">Tổng yêu cầu</p>
+                            <p className="text-3xl font-black text-slate-900">{requests.length}</p>
+                        </div>
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 flex items-center gap-6">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+                            <FileSignature className="w-8 h-8" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-bold text-slate-500 mb-1">Hợp đồng hiệu lực</p>
+                            <p className="text-3xl font-black text-slate-900">{contracts.filter((c: any) => c.status === 'DANG_HIEU_LUC').length}</p>
+                        </div>
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 flex items-center gap-6">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 text-amber-600 flex items-center justify-center border border-amber-100">
+                            <Wallet className="w-8 h-8" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-bold text-slate-500 mb-1">Thanh toán chờ</p>
+                            <p className="text-3xl font-black text-slate-900">{payments.filter((p: any) => p.status === 'CHO_THANH_TOAN').length}</p>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
             
             {/* Form đặt nhanh */}
             {boothId && activeTab === 'requests' && (
@@ -446,38 +482,128 @@ export const UserDashboard = () => {
                                 </button>
                             </div>
                             <div className="p-8">
-                                <div className="flex justify-center mb-8 relative group">
-                                    <div className="absolute inset-0 bg-indigo-100 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                                    <img 
-                                        src={`https://img.vietqr.io/image/Techcombank-19035497946017-compact2.png?amount=${selectedPayment.amount}&addInfo=Thanh toan HD ${selectedPayment.contractNo}&accountName=NGUYEN DANG QUANG`} 
-                                        alt="VietQR" 
-                                        className="w-56 h-56 object-contain border-[3px] border-white rounded-3xl shadow-xl p-3 bg-white relative z-10 transform transition-transform hover:scale-105 duration-300"
-                                    />
+                                {/* Payment Method Selector */}
+                                <div className="flex bg-slate-100 p-1 rounded-xl mb-8">
+                                    <button 
+                                        onClick={() => setPaymentMethod('bank')} 
+                                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${paymentMethod === 'bank' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                    >
+                                        Ngân hàng
+                                    </button>
+                                    <button 
+                                        onClick={() => setPaymentMethod('vnpay')} 
+                                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${paymentMethod === 'vnpay' ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                    >
+                                        VNPay
+                                    </button>
+                                    <button 
+                                        onClick={() => setPaymentMethod('momo')} 
+                                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${paymentMethod === 'momo' ? 'bg-white text-pink-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                    >
+                                        MoMo
+                                    </button>
                                 </div>
-                                <div className="space-y-4 text-sm text-slate-700 bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-inner">
-                                    <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-                                        <span className="text-slate-500 font-medium">Ngân hàng</span> 
-                                        <span className="font-bold text-slate-900 bg-white px-3 py-1 rounded-lg shadow-sm border border-slate-100">Techcombank</span>
+
+                                {paymentMethod === 'bank' && (
+                                    <>
+                                        <div className="flex justify-center mb-8 relative group">
+                                            <div className="absolute inset-0 bg-indigo-100 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                                            <img 
+                                                src={`https://img.vietqr.io/image/Techcombank-19035497946017-compact2.png?amount=${selectedPayment.amount}&addInfo=Thanh toan HD ${selectedPayment.contractNo}&accountName=NGUYEN DANG QUANG`} 
+                                                alt="VietQR" 
+                                                className="w-56 h-56 object-contain border-[3px] border-white rounded-3xl shadow-xl p-3 bg-white relative z-10 transform transition-transform hover:scale-105 duration-300"
+                                            />
+                                        </div>
+                                        <div className="space-y-4 text-sm text-slate-700 bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-inner">
+                                            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+                                                <span className="text-slate-500 font-medium">Ngân hàng</span> 
+                                                <span className="font-bold text-slate-900 bg-white px-3 py-1 rounded-lg shadow-sm border border-slate-100">Techcombank</span>
+                                            </div>
+                                            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+                                                <span className="text-slate-500 font-medium">Số tài khoản</span> 
+                                                <span className="font-bold text-indigo-700 tracking-wider text-base">19035497946017</span>
+                                            </div>
+                                            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+                                                <span className="text-slate-500 font-medium">Chủ tài khoản</span> 
+                                                <span className="font-bold text-slate-900">NGUYEN DANG QUANG</span>
+                                            </div>
+                                            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+                                                <span className="text-slate-500 font-medium">Số tiền</span> 
+                                                <span className="font-black text-rose-600 text-lg">{formatCurrency(selectedPayment.amount)}</span>
+                                            </div>
+                                            <div className="flex flex-col pt-1">
+                                                <span className="text-slate-500 font-medium mb-2 text-center">Nội dung chuyển khoản (bắt buộc)</span> 
+                                                <span className="font-bold text-indigo-700 bg-indigo-50 px-4 py-3 rounded-xl border border-indigo-100 text-center tracking-wide shadow-sm">
+                                                    Thanh toan HD {selectedPayment.contractNo}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {paymentMethod === 'vnpay' && (
+                                    <div className="animate-in fade-in zoom-in duration-300">
+                                        <div className="flex justify-center mb-8 relative group">
+                                            <div className="absolute inset-0 bg-blue-100 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                                            <img 
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=vnpay://pay?amount=${selectedPayment.amount}&txn_id=${selectedPayment.contractNo}`} 
+                                                alt="VNPay QR" 
+                                                className="w-56 h-56 object-contain border-[3px] border-white rounded-3xl shadow-xl p-3 bg-white relative z-10 transform transition-transform hover:scale-105 duration-300"
+                                            />
+                                        </div>
+                                        <div className="text-center bg-blue-50 p-6 rounded-2xl border border-blue-100 text-blue-900">
+                                            <img src="https://vnpay.vn/s1/vnpay/logo.svg" alt="VNPay" className="h-8 mx-auto mb-4" />
+                                            <p className="font-bold text-lg mb-2">Quét mã qua ứng dụng VNPay</p>
+                                            <p className="text-sm opacity-80 mb-4">Mở ứng dụng ngân hàng hoặc VNPay để thanh toán an toàn.</p>
+                                            
+                                            <div className="bg-white/60 rounded-xl p-3 mb-4 text-sm text-left">
+                                                <div className="flex justify-between">
+                                                    <span className="opacity-80">Chủ tài khoản:</span>
+                                                    <span className="font-bold">NGUYỄN ĐĂNG QUANG</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex justify-between items-center border-t border-blue-200 pt-4 mt-2 text-left">
+                                                <span className="font-medium opacity-80">Số tiền cần thanh toán</span>
+                                                <span className="font-black text-xl text-blue-700">{formatCurrency(selectedPayment.amount)}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-                                        <span className="text-slate-500 font-medium">Số tài khoản</span> 
-                                        <span className="font-bold text-indigo-700 tracking-wider text-base">19035497946017</span>
+                                )}
+
+                                {paymentMethod === 'momo' && (
+                                    <div className="animate-in fade-in zoom-in duration-300">
+                                        <div className="flex justify-center mb-8 relative group">
+                                            <div className="absolute inset-0 bg-pink-100 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                                            <img 
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=2|99|0836668889|NGUYEN DANG QUANG||0|0|${selectedPayment.amount}|Thanh toan HD ${selectedPayment.contractNo}|transfer_myqr`} 
+                                                alt="MoMo QR" 
+                                                className="w-56 h-56 object-contain border-[3px] border-white rounded-3xl shadow-xl p-3 bg-white relative z-10 transform transition-transform hover:scale-105 duration-300"
+                                            />
+                                        </div>
+                                        <div className="text-center bg-pink-50 p-6 rounded-2xl border border-pink-100 text-pink-900">
+                                            <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo" className="h-8 mx-auto mb-4 object-contain" />
+                                            <p className="font-bold text-lg mb-2">Quét mã bằng ứng dụng MoMo</p>
+                                            <p className="text-sm opacity-80 mb-4">Mở MoMo, chọn quét mã để hoàn tất thanh toán.</p>
+                                            
+                                            <div className="bg-white/60 rounded-xl p-3 mb-4 text-sm text-left">
+                                                <div className="flex justify-between mb-1">
+                                                    <span className="opacity-80">Chủ tài khoản:</span>
+                                                    <span className="font-bold">NGUYỄN ĐĂNG QUANG</span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span className="opacity-80">Số điện thoại:</span>
+                                                    <span className="font-bold">0836668889</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex justify-between items-center border-t border-pink-200 pt-4 mt-2 text-left">
+                                                <span className="font-medium opacity-80">Số tiền cần thanh toán</span>
+                                                <span className="font-black text-xl text-pink-700">{formatCurrency(selectedPayment.amount)}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-                                        <span className="text-slate-500 font-medium">Chủ tài khoản</span> 
-                                        <span className="font-bold text-slate-900">NGUYEN DANG QUANG</span>
-                                    </div>
-                                    <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-                                        <span className="text-slate-500 font-medium">Số tiền</span> 
-                                        <span className="font-black text-rose-600 text-lg">{formatCurrency(selectedPayment.amount)}</span>
-                                    </div>
-                                    <div className="flex flex-col pt-1">
-                                        <span className="text-slate-500 font-medium mb-2 text-center">Nội dung chuyển khoản (bắt buộc)</span> 
-                                        <span className="font-bold text-indigo-700 bg-indigo-50 px-4 py-3 rounded-xl border border-indigo-100 text-center tracking-wide shadow-sm">
-                                            Thanh toan HD {selectedPayment.contractNo}
-                                        </span>
-                                    </div>
-                                </div>
+                                )}
                                 <div className="mt-8">
                                     <button 
                                         onClick={() => setSelectedPayment(null)} 

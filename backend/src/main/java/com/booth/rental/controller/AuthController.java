@@ -6,6 +6,7 @@ import com.booth.rental.dto.LoginRequest;
 import com.booth.rental.dto.RegisterRequest;
 import com.booth.rental.dto.request.ForgotPasswordRequest;
 import com.booth.rental.dto.request.ResetPasswordRequest;
+import com.booth.rental.dto.request.VerifyOtpRequest;
 import com.booth.rental.repository.UserRepository;
 import com.booth.rental.security.JwtTokenProvider;
 import com.booth.rental.service.EmailService;
@@ -60,9 +61,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
+                        loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
@@ -77,8 +76,7 @@ public class AuthController {
                 userDetails.getRole().name(),
                 userDetails.getEmail(),
                 userDetails.getPhone(),
-                userDetails.getAddress()
-        ));
+                userDetails.getAddress()));
     }
 
     /**
@@ -112,7 +110,8 @@ public class AuthController {
     @PostMapping("/forgot-password")
     public ResponseEntity<Map<String, String>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new com.booth.rental.exception.BusinessException("Không tìm thấy người dùng với email này", org.springframework.http.HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new com.booth.rental.exception.BusinessException(
+                        "Không tìm thấy người dùng với email này", org.springframework.http.HttpStatus.NOT_FOUND));
 
         String otp = otpService.generateOtp(user.getEmail());
         emailService.sendOtpEmail(user.getEmail(), otp);
@@ -120,13 +119,25 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("message", "Mã xác nhận đã được gửi đến email của bạn"));
     }
 
+    @PostMapping("/verify-otp")
+    public ResponseEntity<Map<String, String>> verifyOtp(@Valid @RequestBody VerifyOtpRequest request) {
+        if (!otpService.isValidOtp(request.getEmail(), request.getOtp())) {
+            throw new com.booth.rental.exception.BusinessException("Mã xác nhận không hợp lệ hoặc đã hết hạn",
+                    org.springframework.http.HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(Map.of("message", "Mã xác nhận hợp lệ"));
+    }
+
     @PostMapping("/reset-password")
     public ResponseEntity<Map<String, String>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new com.booth.rental.exception.BusinessException("Không tìm thấy người dùng với email này", org.springframework.http.HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new com.booth.rental.exception.BusinessException(
+                        "Không tìm thấy người dùng với email này", org.springframework.http.HttpStatus.NOT_FOUND));
 
         if (!otpService.verifyOtp(request.getEmail(), request.getOtp())) {
-            throw new com.booth.rental.exception.BusinessException("Mã xác nhận không hợp lệ hoặc đã hết hạn", org.springframework.http.HttpStatus.BAD_REQUEST);
+            throw new com.booth.rental.exception.BusinessException("Mã xác nhận không hợp lệ hoặc đã hết hạn",
+                    org.springframework.http.HttpStatus.BAD_REQUEST);
         }
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));

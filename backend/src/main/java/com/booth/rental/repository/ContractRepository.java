@@ -32,4 +32,13 @@ public interface ContractRepository extends JpaRepository<Contract, String> {
             @Param("status") Contract.ContractStatus status,
             @Param("from") LocalDate from,
             @Param("to") LocalDate to);
+
+    /**
+     * Tìm hợp đồng sắp hết hạn - trả entity (dùng cho Scheduler nhắc gia hạn).
+     */
+    @Query("SELECT c FROM Contract c WHERE c.status = :status AND c.endDate BETWEEN :from AND :to")
+    List<Contract> findExpiringContracts(
+            @Param("status") Contract.ContractStatus status,
+            @Param("from") LocalDate from,
+            @Param("to") LocalDate to);
 }

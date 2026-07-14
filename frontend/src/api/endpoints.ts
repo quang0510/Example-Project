@@ -5,6 +5,7 @@ export const api = {
         login: (data: any) => axiosClient.post('/auth/login', data),
         register: (data: any) => axiosClient.post('/auth/register', data),
         forgotPassword: (email: string) => axiosClient.post('/auth/forgot-password', { email }),
+        verifyOtp: (data: {email: string, otp: string}) => axiosClient.post('/auth/verify-otp', data),
         resetPassword: (data: any) => axiosClient.post('/auth/reset-password', data),
     },
     booths: {
@@ -42,6 +43,7 @@ export const api = {
     },
     users: {
         getAll: (params?: any) => axiosClient.get('/users', { params }),
+        getProfile: () => axiosClient.get('/users/me'),
         createManager: (data: any) => axiosClient.post('/users/create-manager', data),
         updateProfile: (data: any) => axiosClient.put('/users/me', data),
         changePassword: (data: any) => axiosClient.put('/users/me/password', data),
@@ -51,6 +53,14 @@ export const api = {
     dashboard: {
         getSummary: () => axiosClient.get('/dashboard/summary'),
         getRevenueChart: (year: number) => axiosClient.get('/dashboard/revenue-chart', { params: { year } }),
+        getRevenueComparison: (year: number) => axiosClient.get('/dashboard/revenue-comparison', { params: { year } }),
+    },
+    reports: {
+        exportFinancial: (year: number, month?: number) =>
+            axiosClient.get('/reports/financial-export', {
+                params: { year, month },
+                responseType: 'blob',
+            }),
     },
     configs: {
         getAll: () => axiosClient.get('/configs'),

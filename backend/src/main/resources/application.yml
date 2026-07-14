@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/booth_rental?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Ho_Chi_Minh&characterEncoding=UTF-8
     username: root
-    password: Sp@tiz0510
+    password: ${DB_PASSWORD:your_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -19,11 +19,27 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
   jackson:
     default-property-inclusion: non_null
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 333536955251-7b8f3bi4bndisidqdtno97jjuvedbibv.apps.googleusercontent.com
+            client-secret: ${GOOGLE_CLIENT_SECRET:your_google_secret}
+            scope:
+              - email
+              - profile
+          facebook:
+            client-id: 1046456284400215
+            client-secret: ${FACEBOOK_CLIENT_SECRET:your_facebook_secret}
+            scope:
+              - email
+              - public_profile
   mail:
     host: smtp.gmail.com
     port: 587
     username: nguyendangquang0510@gmail.com
-    password: FILL_YOUR_APP_PASSWORD_HERE
+    password: ${MAIL_PASSWORD:your_mail_password}
     properties:
       mail:
         smtp:
@@ -34,7 +50,7 @@ spring:
 # JWT Configuration
 app:
   jwt:
-    secret: BoothRentalSuperSecretKey2026@DoNotExposeThisKeyInProductionEnvironment
+    secret: ${JWT_SECRET:defaultSecretKey123!@#defaultSecretKey123!@#}
     expiration-ms: 86400000  # 24 hours
 
   # CORS Configuration
